@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prometheus: Login</title>
+	<link href="assets/css/login.css" rel="stylesheet" />
+</head>
+<body>
+	<h2>Login to Prometheus</h2>
+	<form role="form" action="php/process_login.php" method="post">
+		<div class="imgcontainer">
+			<img src="images/inventory-management.png" alt="Avatar" class="avatar">
+		</div>
+		
+		<div class="container">			
+			<label><b>Username</b></label>
+			<input class="form-control" type="text" placeholder="Enter Username" name="usernameInput" maxLength="25" required>
+			
+			<label><b>Password</b></label>
+			<input class="form-control" type="password" placeholder="Enter Password" name="passwordInput" maxLength="25" required>
+			
+			<button type="submit">Login</button>
+			
+			<!--<input type="checkbox" checked="checked"> Remember me-->
+		</div>
+		
+		<div class="container" style="background-color:#f1f1f1">
+			<button type="reset" class="resetbtn">Reset</button>
+			<span class="create_account_link"><a href="signup.html">Create Account</a></span>
+		</div>
+	</form>
+</body>
+</html>
