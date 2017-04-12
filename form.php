@@ -17,7 +17,7 @@
 </head>
 <body>
 <?php
-include "php/session.php";
+include_once "php/session.php";
 
 	session_start();
 	checkForActiveSession();

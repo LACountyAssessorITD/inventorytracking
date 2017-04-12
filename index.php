@@ -17,7 +17,7 @@
 </head>
 <body>
 <?php
-include "php/session.php";
+include_once "php/session.php";
 
 	session_start();
 	checkForActiveSession();
@@ -96,11 +96,11 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                 </span>
                 <div class="text-box" >
                     <p class="main-text"> 
-                    <?php 
-                          $servername = "localhost:3306";
-                                        $username = "root";
-                                        $password = "";
-                                        $dbname = "LACounty_TEST";
+                    <?php			  
+                          $servername = SQL_SERVER_NAME;
+                                        $username = SQL_SERVER_USERNAME;
+                                        $password = SQL_SERVER_PASSWORD;
+                                        $dbname = SQL_SERVER_DATABASE;
 
 
 
@@ -134,11 +134,11 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                 <div class="text-box" >
                     <p class="main-text">
 
-                    <?php 
-                          $servername = "localhost:3306";
-                                        $username = "root";
-                                        $password = "";
-                                        $dbname = "LACounty_TEST";
+                    <?php 			  
+                          $servername = SQL_SERVER_NAME;
+                                        $username = SQL_SERVER_USERNAME;
+                                        $password = SQL_SERVER_PASSWORD;
+                                        $dbname = SQL_SERVER_DATABASE;
 
 
 
@@ -201,12 +201,11 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                                         </tr>
                                     </thead>
                                     </tbody>
-                                    <?php
-
-                                        $servername = "localhost:3306";
-                                        $username = "root";
-                                        $password = "";
-                                        $dbname = "LACounty_TEST";
+                                    <?php			  
+							$servername = SQL_SERVER_NAME;
+                                        $username = SQL_SERVER_USERNAME;
+                                        $password = SQL_SERVER_PASSWORD;
+                                        $dbname = SQL_SERVER_DATABASE;
 
 
 
@@ -260,11 +259,11 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
 <!-- //////////////////////////////////////// -->
-<?php
-    $servername = "localhost:3306";
-    $username = "root";
-    $password = "";
-    $dbname = "LACounty_TEST";
+<?php			  
+	$servername = SQL_SERVER_NAME;
+	$username = SQL_SERVER_USERNAME;
+      $password = SQL_SERVER_PASSWORD;
+      $dbname = SQL_SERVER_DATABASE;
 
     $connection = new mysqli($servername, $username, $password, $dbname);
 
@@ -346,12 +345,11 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
 
                         <div class="panel-body">
                             <ul class="chat-box">
-<?php
-
-    $servername = "localhost:3306";
-    $username = "root";
-    $password = "";
-    $dbname = "LACounty_TEST";
+<?php			  
+	$servername = SQL_SERVER_NAME;
+      $username = SQL_SERVER_USERNAME;
+	$password = SQL_SERVER_PASSWORD;
+      $dbname = SQL_SERVER_DATABASE;
 
 
 

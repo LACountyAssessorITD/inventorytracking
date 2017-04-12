@@ -17,7 +17,7 @@
 </head>
 <body>
 <?php
-include "php/session.php";
+include_once "php/session.php";
 
 	session_start();
 	checkForActiveSession();
@@ -105,7 +105,7 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
 									<tbody>
 
 <?php
-include "php/search_html.php";
+include_once "php/search_html.php";
 	$tag = $_GET['assettag'];
 	$result = assetHistory($tag);	
 

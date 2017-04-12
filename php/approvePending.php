@@ -1,5 +1,5 @@
 <?php
-                include "Conn.php";
+                include_once "Conn.php";
                
                 approvePending($_POST['tag']);
 

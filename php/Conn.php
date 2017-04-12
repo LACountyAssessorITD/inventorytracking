@@ -1,16 +1,15 @@
 <?php
+include_once "constants.php";
 
 	function updateCustodian($conn, $dbcolumns, $dbcolumnsType, $ASSET_ID, $CUSTODIAN_ID, $CUSTODIAN_NAME) {
 		update($conn, $dbcolumns, $dbcolumnsType, array($ASSET_ID, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $CUSTODIAN_ID, $CUSTODIAN_NAME));
 	}
 
 	function approvePending($val) {
-		session_start();
-
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 		$dbcolumns = array("ASSET_ID", "ASSETTAG", "SERIALNBR", "OTHER_ID", "CATEGORY_ID",
 			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DESCR",
@@ -37,10 +36,10 @@
 		$all=search_pending($val);
 
 		$lol= $all->fetch_array(MYSQLI_NUM);
-		// echo $lol[1];
+		echo $lol[1];
 
 
-		$new_table = update($conn, $dbcolumns, $dbcolumnsType, $lol);
+		update($conn, $dbcolumns, $dbcolumnsType, $lol);
 
 
 		$sql = "DELETE FROM PenddingRequest WHERE ASSETTAG =";
@@ -48,137 +47,18 @@
 		$sql .= $val;
 		$sql .= "\"";
 		if ($conn->query($sql) === TRUE) {
-			//echo "DELETE SUCCESSFULLY\n";
+			echo "DELETE SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
 
-
-		$sql = "INSERT INTO `history` (`ASSETTAG`, `UPDATE_TIME`, `DESCRIPTION`, `UPDATE_BY_USER`) VALUES";
-		$sql .= "('";
-		$sql .= $lol[1];
-		$sql .= "', '";
-		// $sql .= date_create()->format('Y-m-d H:i:s');
-		date_default_timezone_set('America/Los_Angeles');
-
-		$sql .=date('Y-m-d H:i:s');
-
-// date_default_timezone_set('America/Los Angeles');
-// echo date('d-m-Y H:i');
-
-
-		$sql .="', '";
-		$sql .="approve transaction: change ";
-		if ( $lol[33] =="owner"){
-
-			$sql .=$lol[33];
-			$sql .=" to ";
-			$sql .=$lol[32];
-		}
-		else {
-
-			$sql .="location to ";
-			$sql .=$lol[22];
-
-		}
-		$sql .="', '";
-		$sql .= $_SESSION['username'];
-		$sql .="');";
-
-		// echo $sql;
-
-		if ($conn->query($sql) === TRUE) {
-			echo "Approve Pending Successfully\n";
-		} else {
-	    	echo "Error:" . $conn->error . "\n";
-		}
-
-
-
-	}
-
-
-	function denyPending($val){
-		session_start();
-
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
-
-		$dbcolumns = array("ASSET_ID", "ASSETTAG", "SERIALNBR", "OTHER_ID", "CATEGORY_ID",
-			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DESCR",
-			"CPUTYPE", "MEMORYTYPE", "HARDDISKTYPE", "CUSTODIAN_ID", "CUSTODIANNAME",
-			"ORIGVAL", "LIFE", "BOOKVAL", "WARRANTYEXPDATE", "PO_ID",
-			"PURCHASEORDERNBR", "LOCATION_ID", "LOCATIONNAME", "STATUS_ID", "STATUSDESC",
-			"STATUSDATE", "IMPORTED", "CREATEDATE", "CREATEUSER_ID", "UPDATEDATE",
-			"UPDATEUSER_ID", "DELETEUSER_ID", "SYSUPDATEUSER");
-
-		$dbcolumnsType = array(FALSE, TRUE, TRUE, TRUE, FALSE,
-			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE, FALSE, TRUE,
-			FALSE, FALSE, FALSE, TRUE, FALSE,
-			TRUE, FALSE, TRUE, FALSE, TRUE,
-			TRUE, TRUE, TRUE, FALSE, TRUE,
-			FALSE, FALSE, TRUE);
-
-
-
-		$conn = new mysqli($servername, $username, $password, $dbname);
-		if ($conn->connect_error) {
-			die("Connection Failed: " . $conn->connect_error);
-		}
-		$all=search_pending($val);
-		$lol= $all->fetch_array(MYSQLI_NUM);
-
-		$sql = "DELETE FROM PenddingRequest WHERE ASSETTAG =";
-		$sql .= "\"";
-		$sql .= $val;
-		$sql .= "\"";
-		if ($conn->query($sql) === TRUE) {
-			//echo "DELETE SUCCESSFULLY\n";
-		} else {
-	    	echo "Error:" . $conn->error . "\n";
-		}
-
-		
-
-
-		$sql = "INSERT INTO `history` (`ASSETTAG`, `UPDATE_TIME`, `DESCRIPTION`, `UPDATE_BY_USER`) VALUES";
-		$sql .= "('";
-		$sql .= $val;
-		$sql .= "', '";
-		$sql .= date_create()->format('Y-m-d H:i:s');
-		$sql .="', '";
-		$sql .="deny transaction : change ";
-		if ( $lol[33] =="owner"){
-			$sql .=$lol[33];
-			$sql .=" to ";
-			$sql .=$lol[32];
-		}
-		else {
-			$sql .="location to ";
-			$sql .=$lol[22];
-
-		}
-		$sql .="', '";
-		$sql .= $_SESSION['username'];
-		$sql .="');";
-
-		//echo $sql;
-
-		if ($conn->query($sql) === TRUE) {
-			echo "Deny Pending SUCCESSFULLY\n";
-		} else {
-	    	echo "Error:" . $conn->error . "\n";
-		}
 
 	}
 
 	function update($conn, $dbcolumns, $dbcolumnsType, $val) {
 		$sql = updateParser($dbcolumns, $dbcolumnsType, $val);
 		if ($conn->query($sql) === TRUE) {
-			//echo "UPDATE SUCCESSFULLY\n";
+			echo "UPDATE SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
@@ -193,7 +73,7 @@
 		// $sql = "UPDATE ASSET SET CUSTODIANID='3520', CUSTODIANNAME='SUE' WHERE ASSET_ID=7";
 		$sql = "UPDATE all_assets SET ";
 
-		for ($x = 1; $x < count($val)-1; $x++) {
+		for ($x = 1; $x < count($val); $x++) {
 			if ($val[$x]) {
 				$sql .= $dbcolumns[$x];
 				$sql .= "=";
@@ -204,7 +84,7 @@
 				if ($dbcolumnsType[$x]) {
 					$sql .= "'";
 				}
-				if ($x != count($val) - 2) {
+				if ($x != count($val) - 1) {
 					$sql .= ", ";
 				}
 			}
@@ -217,54 +97,46 @@
 		$sql .= "\"";
 
 
-		//print($sql."\n");
+		print($sql."\n");
 		return $sql;
 	}
 
 	function insert($val) {
 
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 		$dbcolumns = array("ASSET_ID", "ASSETTAG", "SERIALNBR", "OTHER_ID", "CATEGORY_ID",
-			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DESCR",
-			"CPUTYPE", "MEMORYTYPE", "HARDDISKTYPE", "CUSTODIAN_ID", "CUSTODIANNAME",
-			"ORIGVAL", "LIFE", "BOOKVAL", "WARRANTYEXPDATE", "PO_ID",
+			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DECR",
+			"CPUTYPE", "MEMORYTYPE", "HARDDISKTYPE", "CUSTODIANID", "CUSTODIANNAME",
+			"ORIGVAL", "LIFE", "BOOKVAL", "WARRENTYEXPDATE", "PO_ID",
 			"PURCHASEORDERNBR", "LOCATION_ID", "LOCATIONNAME", "STATUS_ID", "STATUSDESC",
 			"STATUSDATE", "IMPORTED", "CREATEDATE", "CREATEUSER_ID", "UPDATEDATE",
 			"UPDATEUSER_ID", "DELETEUSER_ID", "SYSUPDATEUSER");
 
-		$dbcolumnsType = array(TRUE, TRUE, TRUE, TRUE, TRUE,
+		$dbcolumnsType = array(FALSE, TRUE, TRUE, FALSE, FALSE,
 			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE);
+			TRUE, TRUE, TRUE, FALSE, TRUE,
+			FALSE, FALSE, FALSE, FALSE, FALSE,
+			TRUE, FALSE, TRUE, FALSE, TRUE,
+			FALSE, TRUE, FALSE, FALSE, FALSE,
+			FALSE, FALSE, TRUE);
 
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		if ($conn->connect_error) {
 			die("Connection Failed: " . $conn->connect_error);
 		}
 
+		echo "Connect Successfully\n";
 
 		$sql = insertParser($dbcolumns, $dbcolumnsType, $val);
 		if ($conn -> query($sql) === TRUE) {
-			// echo "INSERT SUCCESSFULLY\n";
-			echo "<script>
-window.location.href='/www/form.php';
-alert('Insert Successfully');
-</script>";
-
+			echo "INSERT SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
-
-	    	
-
 		}
-	//	echo $sql;
 
 		$conn->close();
 	}
@@ -307,10 +179,10 @@ alert('Insert Successfully');
 	}
 
 	function search($val) {
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 		$dbcolumns = array("ASSETTAG", "SERIALNBR", "CATEGORYDESC", "MODEL", "LOCATIONNAME");
 
@@ -319,7 +191,7 @@ alert('Insert Successfully');
 			die("Connection Failed: " . $conn->connect_error);
 		}
 
-		// echo "Connect Successfully\n";
+		//echo "Connect Successfully\n";
 
 		$sql = searchParser($dbcolumns, $val);
 		if ($result = $conn->query($sql)) {
@@ -365,16 +237,16 @@ alert('Insert Successfully');
 	}
 
 	function searchHistory($val){
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		if ($conn->connect_error) {
 			die("Connection Failed: " . $conn->connect_error);
 		}
 
-		// echo "Connect Successfully\n";
+		//echo "Connect Successfully\n";
 
 		$sql = searchHistoryParser($val);
 
@@ -393,18 +265,16 @@ alert('Insert Successfully');
 		if (count($val) > 0) {
 			$sql = "SELECT * FROM `history` WHERE `ASSETTAG` LIKE '";
 			$sql .= $val[0];
-
-			$sql .= "' ORDER BY `history`.`UPDATE_TIME` DESC";
-
+			$sql .= "'";
 		}
 		return $sql;
 	}
 
 	function scansearch($val){
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 		//$dbcolumns = array("ASSETTAG");
 
@@ -428,10 +298,10 @@ alert('Insert Successfully');
 	}
 
 	function scansearch_location($val){
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 		//$dbcolumns = array("ASSETTAG");
 
@@ -486,10 +356,10 @@ alert('Insert Successfully');
 	}
 
 function search_pending($val){
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 		//$dbcolumns = array("ASSETTAG");
 
@@ -529,10 +399,10 @@ function search_pending($val){
 	}
 
 	function switchPosition($id, $position){
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 
 		$conn = new mysqli($servername, $username, $password, $dbname);
@@ -551,7 +421,7 @@ function search_pending($val){
 		}		
 	
 		if ($result = $conn->query($sql)) {
-			// echo "change SUCCESSFULLY\n";
+			echo "change SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
@@ -579,10 +449,10 @@ function search_pending($val){
 			FALSE, FALSE, TRUE);
 
 
-		$sql = insertParser_Pending($dbcolumns, $dbcolumnsType, $row, "location");
+		$sql = insertParser_Pending($dbcolumns, $dbcolumnsType, $row);
 
 		if ($conn -> query($sql) === TRUE) {
-			// echo "INSERT SUCCESSFULLY\n";
+			echo "INSERT SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
@@ -601,7 +471,7 @@ function search_pending($val){
 		$sql .= "\"";
 
 		if ($conn -> query($sql) === TRUE) {
-			//echo "INSERT SUCCESSFULLY\n";
+			echo "INSERT SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
@@ -610,88 +480,7 @@ function search_pending($val){
 
 	}
 
-
-	function switchOwner($id, $owner){
-	$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
-
-
-		$conn = new mysqli($servername, $username, $password, $dbname);
-		if ($conn->connect_error) {
-			die("Connection Failed: " . $conn->connect_error);
-		}
-
-		$sql = "SELECT * FROM all_assets";
-		if (count($id) > 0) {
-			$sql .= " WHERE ";
-			$sql .= " ASSETTAG ";
-			$sql .= " LIKE ";
-			$sql .= "\"";
-			$sql .= $id;
-			$sql .= "\"";
-		}		
-	
-		if ($result = $conn->query($sql)) {
-			// echo "change SUCCESSFULLY\n";
-		} else {
-	    	echo "Error:" . $conn->error . "\n";
-		}
-
-
-		$row = $result->fetch_array(MYSQLI_NUM);
-		// echo ($row);
-
-		
-
-		$dbcolumns = array("ASSET_ID", "ASSETTAG", "SERIALNBR", "OTHER_ID", "CATEGORY_ID",
-			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DECR",
-			"CPUTYPE", "MEMORYTYPE", "HARDDISKTYPE", "CUSTODIANID", "CUSTODIANNAME",
-			"ORIGVAL", "LIFE", "BOOKVAL", "WARRENTYEXPDATE", "PO_ID",
-			"PURCHASEORDERNBR", "LOCATION_ID", "LOCATIONNAME", "STATUS_ID", "STATUSDESC",
-			"STATUSDATE", "IMPORTED", "CREATEDATE", "CREATEUSER_ID", "UPDATEDATE",
-			"UPDATEUSER_ID", "DELETEUSER_ID", "SYSUPDATEUSER", "SWITCH");
-
-		$dbcolumnsType = array(FALSE, TRUE, TRUE, TRUE, FALSE,
-			TRUE, TRUE, TRUE, TRUE, TRUE,
-			TRUE, TRUE, TRUE, FALSE, TRUE,
-			FALSE, FALSE, FALSE, TRUE, FALSE,
-			TRUE, FALSE, TRUE, FALSE, TRUE,
-			TRUE, TRUE, TRUE, FALSE, TRUE,
-			FALSE, FALSE, TRUE, TRUE);
-
-		$sql = insertParser_Pending($dbcolumns, $dbcolumnsType, $row,"owner");
-		if ($conn -> query($sql) === TRUE) {
-			// echo "INSERT SUCCESSFULLY\n";
-		} else {
-	    	echo "Error:" . $conn->error . "\n";
-		}
-
-		$sql = "UPDATE PenddingRequest";
-		$sql.=" SET SYSUPDATEUSER = ";
-		$sql .= "\"";
-
-		$sql.=$owner;
-					$sql .= "\"";
-
-		$sql.= " WHERE ASSETTAG = ";
-		$sql .= "\"";
-
-		$sql.=$id;
-		$sql .= "\"";
-
-		if ($conn -> query($sql) === TRUE) {
-			// echo "INSERT SUCCESSFULLY\n";
-		} else {
-	    	echo "Error:" . $conn->error . "\n";
-		}
-		$conn->close();
-
-	}
-
-
-	function insertParser_Pending($dbcolumns, $dbcolumnsType, $val,$type) {
+	function insertParser_Pending($dbcolumns, $dbcolumnsType, $val) {
 		$sql = "INSERT INTO PenddingRequest ";
 		$sql .= " VALUES (";
 
@@ -706,51 +495,73 @@ function search_pending($val){
 				}
 				
 			
-			//if ($x != count($val) - 1) {
+			if ($x != count($val) - 1) {
 					$sql .= ", ";
-				
+				}
 		}
-		$sql.="'";
-		$sql.=$type;
-		$sql.="'";
-
 
 		$sql .= ")";
-		// echo($sql . "\n");
+		echo($sql . "\n");
 
 		return $sql;
 	}
 
-
-
+	function authenticateUser($username, $password) {
+		$server = LDAP_SERVER_NAME;
+		
+		$ldap = ldap_connect($server);
+		
+		if ($ldap) {	
+			ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+			ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+		
+			$bind = ldap_bind($ldap, $username, $password);
+		
+			if ($bind) {
+				$msg = "Authentication successful";
+				echo $msg;
+				
+				ldap_close($ldap);
+				
+				return TRUE;
+			} else {
+				$msg = "Invalid email address / password";
+				echo $msg;
+				
+				return FALSE;
+			}
+		} else {
+			return FALSE;
+		}
+	}
 		
 	function validateUser($val) {
-		$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
-
-		$dbcolumns = array("USERNAME", "PASSWORD");
-
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
+	
+		$dbcolumns = array("USERNAME");
+	
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		if ($conn->connect_error) {
 			die("Connection Failed: " . $conn->connect_error);
 		}
-
+	
 		echo "Connect Successfully\n";
-
+	
 		$sql = validateUserParser($dbcolumns, $val);
 		if ($result = $conn->query($sql)) {
-			// echo "SELECT SUCCESSFULLY\n";
+			echo "SELECT SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
-
+	
 		$conn->close();
 		
 		return $result;
 	}
-
+	
 	function validateUserParser($dbcolumns, $val) {
 		$sql = "SELECT * FROM users WHERE ";
 					
@@ -760,9 +571,9 @@ function search_pending($val){
 			$sql .= "=\"";
 			$sql .= $val[$x];
 			$sql .= "\"";
-			if ($x != count($val) - 1) {
-				$sql .= " AND ";
-			}
+			//if ($x != count($val) - 1) {
+			//	$sql .= " AND ";
+			//}
 		}
 		
 		// print($sql . "\n");
@@ -771,10 +582,10 @@ function search_pending($val){
 	}
 	
 	function createUser($val) {
-	$servername = "localhost:3306";
-		$username = "root";
-		$password = "";
-		$dbname = "LACounty_TEST";
+		$servername = SQL_SERVER_NAME;
+		$username = SQL_SERVER_USERNAME;
+		$password = SQL_SERVER_PASSWORD;
+		$dbname = SQL_SERVER_DATABASE;
 
 
 		$dbcolumns = array("USERNAME", "PASSWORD");
@@ -790,7 +601,7 @@ function search_pending($val){
 		$result = $conn->query($sql);
 		
 		if ($result) {
-			// echo "INSERT SUCCESSFULLY\n";
+			echo "INSERT SUCCESSFULLY\n";
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
 		}
@@ -816,7 +627,11 @@ function search_pending($val){
 		for ($x = 0; $x < count($val); $x++) {
 			// print("!!!". $x. "\n");
 			$sql .= "'";
-			$sql .= $val[$x];
+			if ($x == 1) {
+				$sql .= password_hash($val[$x], PASSWORD_DEFAULT);			
+			} else {
+				$sql .= $val[$x];
+			}
 			$sql .= "'";
 			if ($x != count($val) - 1) {
 				$sql .= ", ";

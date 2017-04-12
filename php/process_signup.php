@@ -1,5 +1,5 @@
 <?php
-include "Conn.php";
+include_once "Conn.php";
 
 	session_start();
 	
@@ -8,15 +8,19 @@ include "Conn.php";
 	$repeatPwd = $_POST["pwdRepeatInput"];
 	
 	if ($password != $repeatPwd) {
-		header("Location: http://localhost:41062/www/signup_error.html");
+		header("Location: " . SIGNUP_ERROR_URL);
+	}
+	
+	if (!authenticateUser($username, $password)) {
+		header("Location: " . SIGNUP_ERROR_URL);		
 	}
 	
 	$val = array($username, $password);
 	$result = createUser($val);
 	
 	if ($result) {
-		header("Loccation: http://localhost:41062/www/login.html");
+		header("Loccation: " . LOGIN_URL);
 	} else {
-		header("Location: http://localhost:41062/www/signup_error.html");
+		header("Location: " . SIGNUP_ERROR_URL);
 	}
 ?>

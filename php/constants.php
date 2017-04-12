@@ -1,0 +1,14 @@
+<?php
+	define("HOME_PAGE_URL", "http://hinvtracdev-v/prometheus/index.php");
+    define("LOGIN_URL", "http://hinvtracdev-v/prometheus/login.html");
+	define("LOGIN_ERROR_URL", "http://hinvtracdev-v/prometheus/login_error.html");
+    define("SIGNUP_URL", "http://hinvtracdev-v/prometheus/signup.html");
+	define("SIGNUP_ERROR_URL", "http://hinvtracdev-v/prometheus/signup_error.html");
+	
+	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
+
+	define("SQL_SERVER_NAME", "hinvtracdev-v:3306");
+	define("SQL_SERVER_USERNAME", "root");
+	define("SQL_SERVER_PASSWORD", "root");
+	define("SQL_SERVER_DATABASE", "prometheus");
+?>

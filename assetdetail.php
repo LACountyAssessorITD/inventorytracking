@@ -18,7 +18,7 @@
 </head>
 <body>
 <?php
-include "php/session.php";
+include_once "php/session.php";
 
 	session_start();
 	checkForActiveSession();
@@ -97,7 +97,7 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
 
 <?php
-include "php/search_html.php";
+include_once "php/search_html.php";
 	$tag = $_GET['assettag'];
 	// echo $tag;
 	$result = assetDetail($tag);	

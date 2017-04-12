@@ -17,7 +17,7 @@
 </head>
 <body>
 <?php
-include "php/session.php";
+include_once "php/session.php";
 
 	session_start();
 	checkForActiveSession();
@@ -84,7 +84,7 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                 <div class="row">
                     <div class="col-md-12">
                      <h2>Table Examples</h2>   
-                        <h5>Welcome Tony Sereno , Love to see you back. </h5>
+                        <h5>Welcome <?php echo getName(); ?>, Love to see you back. </h5>
                        
                     </div>
                 </div>
@@ -149,12 +149,11 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                                     <tbody>
 <!--                                         <!--  -->
 
-<?php
-    $servername = "localhost:3306";
-    $username = "root";
-    $password = "";
-
-    $dbname = "LACounty_TEST";
+<?php			  
+	$servername = SQL_SERVER_NAME;
+	$username = SQL_SERVER_USERNAME;
+      $password = SQL_SERVER_PASSWORD;
+      $dbname = SQL_SERVER_DATABASE;
 
     // $connection = mysql_connect($servername, $username, $password);
     // mysql_select_db($dbname, $connection);

@@ -1,6 +1,6 @@
 <?php
 //Add a comment to this line
-include 'Conn.php';
+include_once 'Conn.php';
 changePosition();
 function changePosition() {
    $position = $_POST["position"];

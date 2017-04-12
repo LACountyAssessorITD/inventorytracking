@@ -1,7 +1,9 @@
 <?php
+include_once "constants.php";
+
 	function checkForActiveSession() {
 		if (!userLoggedIn()) {
-			header("Location: http://localhost:41062/www/login.html");
+			header("Location: " . LOGIN_URL);
 		}
 	}
 	
