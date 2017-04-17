@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
@@ -97,6 +97,7 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
                             <div class="row">
                                 <div class="col-md-6">
                                     <h3>Basic Asset Information</h3>
+						<label style="color:red"><b>Invalid asset</b></label>
                                     <form role="form"  action="php/text_html.php" method="post">
                                         <div class="form-group">
                                             <label>Asset ID (*)</label>

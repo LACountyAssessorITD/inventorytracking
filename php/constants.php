@@ -4,6 +4,8 @@
 	define("LOGIN_ERROR_URL", "http://hinvtracdev-v.laassessor.co.la.ca.us/prometheus/login_error.html");
     define("SIGNUP_URL", "http://hinvtracdev-v.laassessor.co.la.ca.us/prometheus/signup.html");
 	define("SIGNUP_ERROR_URL", "http://hinvtracdev-v.laassessor.co.la.ca.us/prometheus/signup_error.html");
+	define("ADD_ASSET_URL", "http://hinvtracdev-v.laassessor.co.la.ca.us/prometheus/form.php");
+	define("ADD_ASSET_ERROR_URL", "http://hinvtracdev-v.laassessor.co.la.ca.us/prometheus/form_error.php");
 	
 	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
 

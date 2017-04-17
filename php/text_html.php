@@ -1,6 +1,6 @@
 <?php
 include_once 'Conn.php';
-
+include_once 'constants.php';
 
 
 
@@ -72,7 +72,7 @@ $locationID=check($locationID);
 $location=check($location);
 $status=check($status);
 $statusdesc=check($statusdesc);
-$tatusdate=check($statusdate);
+$statusdate=check($statusdate);
 $importatnt=check($importatnt);
 $createdate=check($createdate);
 $createuserID=check($createuserID);
@@ -89,7 +89,12 @@ $val = array($id, $tag, $serial, $otherID , $categoryID,
 	 $statusdate, $importatnt,$createdate,$createuserID, 
 	 $updatetime, $updateUserID, $deleteuserID, $sysupdateuser);
 
-insert($val);
+if (insert($val))
+{
+	header("Location: " . ADD_ASSET_URL);
+} else {
+	header("Location: " . ADD_ASSET_ERROR_URL);
+}
 
 
 function check($value){

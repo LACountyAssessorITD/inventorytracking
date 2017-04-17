@@ -109,9 +109,9 @@ include_once "constants.php";
 		$dbname = SQL_SERVER_DATABASE;
 
 		$dbcolumns = array("ASSET_ID", "ASSETTAG", "SERIALNBR", "OTHER_ID", "CATEGORY_ID",
-			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DECR",
-			"CPUTYPE", "MEMORYTYPE", "HARDDISKTYPE", "CUSTODIANID", "CUSTODIANNAME",
-			"ORIGVAL", "LIFE", "BOOKVAL", "WARRENTYEXPDATE", "PO_ID",
+			"CATEGORYDESC", "ECAPSCODE", "MAKE", "MODEL", "DESCR",
+			"CPUTYPE", "MEMORYTYPE", "HARDDISKTYPE", "CUSTODIAN_ID", "CUSTODIANNAME",
+			"ORIGVAL", "LIFE", "BOOKVAL", "WARRANTYEXPDATE", "PO_ID",
 			"PURCHASEORDERNBR", "LOCATION_ID", "LOCATIONNAME", "STATUS_ID", "STATUSDESC",
 			"STATUSDATE", "IMPORTED", "CREATEDATE", "CREATEUSER_ID", "UPDATEDATE",
 			"UPDATEUSER_ID", "DELETEUSER_ID", "SYSUPDATEUSER");
@@ -121,7 +121,7 @@ include_once "constants.php";
 			TRUE, TRUE, TRUE, FALSE, TRUE,
 			FALSE, FALSE, FALSE, FALSE, FALSE,
 			TRUE, FALSE, TRUE, FALSE, TRUE,
-			FALSE, TRUE, FALSE, FALSE, FALSE,
+			FALSE, FALSE, FALSE, FALSE, FALSE,
 			FALSE, FALSE, TRUE);
 
 		$conn = new mysqli($servername, $username, $password, $dbname);
@@ -134,30 +134,32 @@ include_once "constants.php";
 		$sql = insertParser($dbcolumns, $dbcolumnsType, $val);
 		if ($conn -> query($sql) === TRUE) {
 			echo "INSERT SUCCESSFULLY\n";
+			$conn->close();
+			return TRUE;
 		} else {
 	    	echo "Error:" . $conn->error . "\n";
+			$conn->close();
+			return FALSE;
 		}
-
-		$conn->close();
 	}
 
 	function insertParser($dbcolumns, $dbcolumnsType, $val) {
 		$sql = "INSERT INTO all_assets (";
 
 		for ($x = 0; $x < count($val); $x++) {
-			if ($val[$x]) {
+			//if ($val[$x]) {
 				// print("!!!". $x. "\n");
 				$sql .= $dbcolumns[$x];
 				if ($x != count($val) - 1) {
 					$sql .= ", ";
 				}
-			}
+			//}
 		}
 
 		$sql .= ")\nVALUES (";
 
 		for ($x = 0; $x < count($val); $x++) {
-			if ($val[$x]) {
+			//if ($val[$x]) {
 				// print("!!!". $x. "\n");
 				if ($dbcolumnsType[$x]) {
 					$sql .= "'";
@@ -169,7 +171,7 @@ include_once "constants.php";
 				if ($x != count($val) - 1) {
 					$sql .= ", ";
 				}
-			}
+			//}
 		}
 
 		$sql .= ")";
