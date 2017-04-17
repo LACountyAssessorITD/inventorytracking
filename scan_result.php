@@ -231,7 +231,7 @@ font-size: 16px;">  <a href="php/process_logout.php" class="btn btn-danger squar
 
         load_from_url_callback();
         function startscan() {
-              window.location = "mochabarcode://CALLBACK=http://hinvtracdev-v/prometheus/scan_result.php?SHOW=" + asset;     
+              window.location = "mochabarcode://CALLBACK=http://hinvtracdev-v.laassessor.co.la.ca.us/prometheus/scan_result.php?SHOW=" + asset;     
                 alert(asset);  
          }
 
